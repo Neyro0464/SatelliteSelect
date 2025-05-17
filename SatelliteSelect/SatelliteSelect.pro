@@ -7,16 +7,10 @@ CONFIG += c++17 cmdline
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        CalcMethodUtils.cpp \
         CoordWorkerUtils.cpp \
         FileTxtReader.cpp \
-        SatelliteSelect.cpp \
-        Sgp4CalcMethod.cpp \
         Source.cpp \
-        StationClass.cpp \
-        myMath.cpp \
-        myTime.cpp \
-        test.cpp
+        StationClass.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -28,10 +22,7 @@ HEADERS += \
     ErrorHandler.h \
     FileTxtReader.h \
     IReader.h \
-    SatelliteSelect.h \
-    Sgp4CalcMethod.h \
-    StationClass.h \
-    myVector.h
+    StationClass.h
 
 DISTFILES += \
     TLE.txt

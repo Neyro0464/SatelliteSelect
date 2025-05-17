@@ -1,22 +1,29 @@
 #ifndef FILETXTREADER_H
 #define FILETXTREADER_H
 
-#include "IReader.h"
 #include <string>
 #include <fstream>
+#include <vector>
+
+
+#include "IReader.h"
 
 
 
 class FileTxtReader : public IReader {
 public:
-	FileTxtReader() = default;
+    // FileTxtReader() = default;
+    explicit FileTxtReader(const std::string& src);
     ~FileTxtReader() = default;
 
-    dataFrame GetNextData() override;
+    bool SetReaderSrc(const std::string&) override;
+    dataFrame GetFrame() override;
+
+
+    //Prototype
+    std::vector<dataFrame> GetFewFrames(const std::size_t frameQuantity) override;
 
 private:
-    bool SetReaderSrc(const std::string&) override;
-	int read() override;
 	std::ifstream file;
 };
 

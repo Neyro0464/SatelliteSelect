@@ -2,8 +2,6 @@
 #include "StationClass.h"
 
 
-StationClass::StationClass(){}
-
 StationClass::StationClass(StationParams param){
     SetStationPos(param.geo);
     SetStationFilter(param.lim);

@@ -5,27 +5,27 @@
 #include "ErrorHandler.h"
 
 class StationClass{
-
 private:
-	struct StationVision {
+    struct StationVision {
 		double minAzm = 0;
 		double maxAzm = 0;
 		double minElv = 0;
 		double maxElv = 0;
-		unsigned int timeMinObserveSec = 0;
+        std::size_t timeMinObserveSec = 0;
 	};
 
 public:
-	struct StationParams {
+    struct StationParams
+    {
     private:
         CoordWorkerUtils::CoordDecart dec{};
 
     public:
         CoordWorkerUtils::CoordGeodetic geo{};
-		StationVision lim{};
-        CoordWorkerUtils::CoordDecart GetCoordDecart() const {return dec;};
-        void CalcCoordDecart() {dec = CoordWorkerUtils::ConvertGEOtoDecart(geo);};
-	};
+        StationVision lim{};        
+        CoordWorkerUtils::CoordDecart GetCoordDecart() const { return dec; };
+        void CalcCoordDecart() { dec = CoordWorkerUtils::ConvertGEOtoDecart(geo); };
+    };
 
 private:
 	StationParams station;
@@ -33,7 +33,7 @@ private:
     bool CheckLim(StationVision vis) const;
 	
 public:
-	StationClass();
+    StationClass() = default;
     StationClass(StationParams a);
 
     ErrorHandler::Error InitParamsConsole();

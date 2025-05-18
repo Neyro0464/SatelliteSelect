@@ -27,8 +27,8 @@ public:
 		CoordGeodetic geo{};
 	};
 
-	static double RadToDeg(double arg) noexcept { return (double)(arg / (2.0 * PI_M) * 360.0); };
-	static double DegToRad(double arg) noexcept { return (double)(arg / 360.0 * (2.0 * PI_M)); };
+    static double RadToDeg(double arg) noexcept { return (arg / (2.0 * PI_M) * 360.0); };
+    static double DegToRad(double arg) noexcept { return (arg / 360.0 * (2.0 * PI_M)); };
 
 	static CoordDecart ConvertGEOtoDecart(const CoordGeodetic Object);
 	static CoordDecart ConvertGEOtoDecart(const double Lat, const double Lon, const double Alt);

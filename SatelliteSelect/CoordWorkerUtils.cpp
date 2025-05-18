@@ -15,7 +15,7 @@ CoordWorkerUtils::CoordDecart CoordWorkerUtils::ConvertGEOtoDecart(const double 
     return CoordDecart{ x, y, z };
 }
 
-// Transfer satellite coordinate system in station coodinate system
+// Transfer object coordinate system in shiftedObject coodinate system
 CoordWorkerUtils::CoordDecart CoordWorkerUtils::CoordShift(const CoordDecart shiftedObject, const CoordGeodetic object) {
     double x = shiftedObject.x + R + object.Alt;
     double y = shiftedObject.y;

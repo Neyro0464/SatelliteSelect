@@ -17,7 +17,7 @@ public:
     ~FileTxtReader() = default;
 
     bool SetReaderSrc(const std::string&) override;
-    dataFrame GetFrame() override;
+    std::optional<dataFrame> GetFrame() override;
 
 
     //Prototype

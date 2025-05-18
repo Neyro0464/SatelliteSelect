@@ -24,23 +24,26 @@ bool FileTxtReader::SetReaderSrc(const std::string& src)
     return true;
 }
 
-FileTxtReader::dataFrame FileTxtReader::GetFrame(){
+std::optional<FileTxtReader::dataFrame> FileTxtReader::GetFrame(){
     std::string name, param1, param2;
     
     std::getline(file, name);
     std::getline(file, param1);
     std::getline(file, param2);
-    
+    if (name.empty() && param1.empty() && param2.empty()){
+        return std::nullopt;
+    }
     return dataFrame{ std::move(name), std::move(param1), std::move(param2) };
 }
-
-// Prototype
 
 std::vector<FileTxtReader::dataFrame> FileTxtReader::GetFewFrames(const std::size_t frameQuantity){
     std::vector<dataFrame> result;
     for(std::size_t i = 0; i < frameQuantity; i++)
-        // if({GetFrame()})
-        result.push_back({GetFrame()});
+    {
+        auto&& a =  GetFrame();
+        if(a.has_value())
+            result.push_back(a.value());
+    }
     return result;
 
 }

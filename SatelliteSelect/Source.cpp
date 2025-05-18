@@ -8,10 +8,8 @@
 
 int main() {
     // FileTxtReader Reader("C:\\Qt\\Projects\\SatelliteSelect\\SatelliteSelect\\testTLE.txt");
-
-    StationClass station;
-
-
+    StationClass::StationVision vis{};
+    StationClass station(0.0, 0.0, 0.0, vis);
     return 1;
 }
 

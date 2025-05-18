@@ -5,44 +5,33 @@
 
 
 class StationClass{
-private:
-    struct StationVision {
-		double minAzm = 0;
-		double maxAzm = 0;
-		double minElv = 0;
-		double maxElv = 0;
-        std::size_t timeMinObserveSec = 0;
-	};
-
 public:
-    struct StationParams
-    {
-    private:
-        CoordWorkerUtils::CoordDecart dec{};
-        bool CheckParams() const;
-        void CalcCoordDecart() { dec = CoordWorkerUtils::ConvertGEOtoDecart(geo); };
-
-    public:
-        StationParams(double latitude, double longitude, double altitude,
-                      double minAzmute, double maxAzmute, double minElavation, double maxElavation, std::size_t timeMinObserveSeconds);
-
-        StationParams(CoordWorkerUtils::CoordGeodetic geodetic, StationVision limits);
-
-        CoordWorkerUtils::CoordGeodetic geo{};
-        StationVision lim{};
-
-        CoordWorkerUtils::CoordDecart GetCoordDecart() const { return dec; };
+    struct StationVision {
+        double minAzm = 0;
+        double maxAzm = 0;
+        double minElv = 0;
+        double maxElv = 0;
+        std::size_t timeMinObserveSec = 0;
     };
 
-private:
-    const StationParams station;
-	
-public:
-    StationClass(StationParams a);
+    StationClass(double latitude, double longitude, double altitude,
+                 double minAzmute, double maxAzmute, double minElavation, double maxElavation, std::size_t timeMinObserveSeconds);
+    StationClass(double latitude, double longitude, double altitude, StationVision limits);
+    StationClass(CoordWorkerUtils::CoordGeodetic geodetic, StationVision limits);
 
-    CoordWorkerUtils::CoordDecart GetStationDecart() const { return station.GetCoordDecart(); };
-    CoordWorkerUtils::CoordGeodetic GetStationGeodetic() const { return station.geo; };
-    StationVision GetStationVision() const { return station.lim; };
+    CoordWorkerUtils::CoordDecart GetCoordDecart() const { return dec; };
+    CoordWorkerUtils::CoordGeodetic GetStationGeodetic() const { return geo; };
+    StationVision GetStationVision() const { return lim; };
+
+private:
+    CoordWorkerUtils::CoordDecart dec{};
+    const CoordWorkerUtils::CoordGeodetic geo{};
+    const StationVision lim{};
+    // const StationParams station;
+
+    void CalcCoordDecart() {  dec = CoordWorkerUtils::ConvertGEOtoDecart(geo); };
+    bool CheckParams() const;
+
 };
 
 #endif // !STATIONCLASS_H

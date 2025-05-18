@@ -7,6 +7,10 @@ CONFIG += c++17 cmdline
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+        CalcMethodLib/CalcMethodUtils.cpp \
+        CalcMethodLib/Sgp4CalcMethod.cpp \
+        CalcMethodLib/myMath.cpp \
+        CalcMethodLib/myTime.cpp \
         CoordWorkerUtils.cpp \
         FileTxtReader.cpp \
         Source.cpp \
@@ -18,6 +22,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    CalcMethodLib/ICalcMethod.h \
+    CalcMethodLib/Sgp4CalcMethod.h \
+    CalcMethodLib/myVector.h \
     CoordWorkerUtils.h \
     ErrorHandler.h \
     FileTxtReader.h \

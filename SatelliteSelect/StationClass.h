@@ -2,7 +2,7 @@
 #define STATIONCLASS_H
 
 #include "CoordWorkerUtils.h"
-#include "ErrorHandler.h"
+
 
 class StationClass{
 private:
@@ -19,45 +19,30 @@ public:
     {
     private:
         CoordWorkerUtils::CoordDecart dec{};
+        bool CheckParams() const;
+        void CalcCoordDecart() { dec = CoordWorkerUtils::ConvertGEOtoDecart(geo); };
 
     public:
+        StationParams(double latitude, double longitude, double altitude,
+                      double minAzmute, double maxAzmute, double minElavation, double maxElavation, std::size_t timeMinObserveSeconds);
+
+        StationParams(CoordWorkerUtils::CoordGeodetic geodetic, StationVision limits);
+
         CoordWorkerUtils::CoordGeodetic geo{};
-        StationVision lim{};        
+        StationVision lim{};
+
         CoordWorkerUtils::CoordDecart GetCoordDecart() const { return dec; };
-        void CalcCoordDecart() { dec = CoordWorkerUtils::ConvertGEOtoDecart(geo); };
     };
 
 private:
-	StationParams station;
-    bool CheckGeo(CoordWorkerUtils::CoordGeodetic geo) const;
-    bool CheckLim(StationVision vis) const;
+    const StationParams station;
 	
 public:
-    StationClass() = default;
     StationClass(StationParams a);
 
-    ErrorHandler::Error InitParamsConsole();
-	/*
-	Function for filling in the value from the console
-	param in: empty Station struct
-	param out: filled Station strut and bool(true if success; false if error)
-	*/
-
-    ErrorHandler::Error SetStationPos(CoordWorkerUtils::CoordGeodetic geo);
-	
-	/*
-	Function for filling in the value from the console
-	param in: empty Station struct
-	param out: filled Station strut and bool(true if success; false if error)
-	*/
-    void SetStation(StationParams tmp);
-    ErrorHandler::Error SetStationFilter(StationVision limits);
-
-
-    StationParams GetStation() const { return station; };
     CoordWorkerUtils::CoordDecart GetStationDecart() const { return station.GetCoordDecart(); };
-	CoordWorkerUtils::CoordGeodetic GetStationGeodetic() const { return station.geo; };
-	StationVision GetStationVision() const { return station.lim; };
+    CoordWorkerUtils::CoordGeodetic GetStationGeodetic() const { return station.geo; };
+    StationVision GetStationVision() const { return station.lim; };
 };
 
 #endif // !STATIONCLASS_H

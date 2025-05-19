@@ -5,7 +5,10 @@
 #include <string>
 #include <ctime>
 #include <time.h>
-#include <cmath> 
+#include <cmath>
+
+#include "ICalcMethodSGP4.h"
+
 
 //* Already defined in  >stdafx.h<
 struct tagVECTOR {
@@ -43,7 +46,7 @@ struct tagSATELLITE {
 #define PI 3.141592653589793
 #endif
 
-class Sgp4CalcMethod {
+class Sgp4CalcMethod: public ICalcMethodSGP4 {
 private:
     char        m_cLine0[23], m_cLine1[70], m_cLine2[70];
     tagSATELLITE   m_Sat;
@@ -107,6 +110,9 @@ private:
     void        VecSum(double* X, double* Y, double* Z, int N);
     void        VecScale(double u, double* X, double* Y, int N);
 
+    double      RadToDeg(double arg) { return (arg / (2.0 * PI) * 360.0); }
+    double      DegToRad(double arg) { return (arg / 360.0 * (2.0 * PI)); }
+
     bool SGP4(double tsince, int iflag, tagVECTOR&pos, tagVECTOR&vel);
     bool SDP4(double tsince, int iflag, tagVECTOR& pos, tagVECTOR& vel);
     void Call_dpper(double* e, double* xincc, double* omgadf, double* xnode, double* xmam);
@@ -121,52 +127,57 @@ private:
     void InitSatellite();
 
     tagVECTOR CalculateLatLonAlt(tagVECTOR vPos, double time);
-
-public:
-    Sgp4CalcMethod(char* m_cLine0, char* m_cLine1, char* m_cLine2);
-    //Sgp4CalcMethod(SATELLITE* pSat);
-    Sgp4CalcMethod();
-    ~Sgp4CalcMethod() = default;
-
-    void SetSatellite(char* m_cLine0, char* m_cLine1, char* m_cLine2);
-    void SetSatellite(std::string& cLine0, std::string& cLine1, std::string& cLine2);
-    //void SetSatellite(SATELLITE* pSat);
-    
-    bool SGP(double time);
-   
-    void CalculateLatLonAlt(double time);
+    void CalculateLatLonAlt(const double time);
 
 
-    //char* GetString(int iStart, int iEnd, char* cLine);
-    double      RadToDeg(double arg) { return (double)(arg / (2.0 * PI) * 360.0); }
-    double      DegToRad(double arg) { return (double)(arg / 360.0 * (2.0 * PI)); }
-    double      JulianDate(tm st);
-    double      JulianDate(double st);
+
+    double          SideralTime(double jd);
     double      JulianDateOfYear(int yr);
     int         EpocheYear(int iYear);
     int         DayOfYear(int, int, int);
     double      FractionOfDay(int, int, int);
     double      ThetaG(double jd);
-    tm          CalendarDate(double dJulian);
-    double      SideralTime(double jd);
-    
 
     double          GetFloat(int iStart, int iEnd, char* cLine);
     long            GetInt(int iStart, int iEnd, char* cLine);
     std::string     GetString(int iStart, int iEnd, char* cLine);
     tagVECTOR          GetPos() const{ return m_vPOS; }
     tagVECTOR          GetVel() const { return m_vVEL; }
-    double          GetLat() const;
-    double          GetLon() const;
-    double          GetAlt() const;
-    std::string     GetSatName() const;
-    double          GetTime() const { return m_fTime; }
+
+
+    double              GetTime() const { return m_fTime; }
     tagVECTOR	        GetUserPos(void) { return m_vUPos; }
     tagVECTOR	        GetUserVel(void) { return m_vUVel; }
     tagVECTOR	        GetObserver(void) { return m_vObs; }
     tagVECTOR	        GetRADec(void) { return m_vRad; }
-    tagSATELLITE       GetSatellite() const;
-    int             GetNORAD() const;
+    tagSATELLITE        GetSatellite() const;
+
+public:
+
+    // Sgp4CalcMethod(char* m_cLine0, char* m_cLine1, char* m_cLine2);
+    Sgp4CalcMethod();
+
+    // ICalcMethod
+    void SetSatellite(char* m_cLine0, char* m_cLine1, char* m_cLine2) override;
+    void SetSatellite(std::string& cLine0, std::string& cLine1, std::string& cLine2) override;
+    
+    bool Calculate(const double time) override;
+
+    double GetLat() const override;
+    double GetLon() const override;
+    double GetAlt() const override;
+    std::string GetSatName() const override;
+    int GetNORAD() const override;
+
+
+    // ICalcMethodSGP4
+    double JulianDate(tm st) override;
+    double JulianDate(double st) override;
+    tm CalendarDate(double dJulian) override;
+    
+
+
+
     
    
  

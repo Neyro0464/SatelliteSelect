@@ -397,50 +397,5 @@ tagVECTOR CVector::Scale( double u )
 }
 
 
-void Sgp4CalcMethod::CalculateLatLonAlt(double jdTime)
-{
-	m_vLLA = CalculateLatLonAlt(m_vPOS, jdTime);
-	m_bLatLonAlt = true;
-}
-
-tagVECTOR Sgp4CalcMethod::CalculateLatLonAlt(tagVECTOR vPOS, double time)
-{
-	// Reference:  The 1992 Astronomical Almanac, page K12. 
-	static tagVECTOR vLLA;
-	double lat, lon, alt;
-	double theta, r, e2, phi, c;
-	double arg1, arg2;
-
-	vLLA.x = vLLA.y = vLLA.z = vLLA.w = 0.0;
-	lat = lon = alt = 0.0;
-	theta = r = e2 = phi = c = 0.0;
-
-	//	theta = atan2(vPOS.y,vPOS.x);
-	theta = AcTan(vPOS.y, vPOS.x);
-
-	arg1 = ThetaG(time);
-	arg1 = theta - arg1;
-	arg2 = 2.0 * PI;
-
-	//	lon = Modulus(theta - ThetaG(time),2.0*PI);
-	lon = Modulus(arg1, arg2);
-
-	r = sqrt(sqr(vPOS.x) + sqr(vPOS.y));
-	e2 = f * (2.0 - f);
-	lat = AcTan(vPOS.z, r);
-	do {
-		phi = lat;
-		c = 1.0 / sqrt(1.0 - e2 * sqr(sin(phi)));
-		lat = AcTan(vPOS.z + xkmper * c * e2 * sin(phi), r);
-	} while (fabs(lat - phi) > 1E-10);//1E-7); For speeding up calculation 7 digit
-	//is exact enough (123.45
-	alt = r / cos(lat) - xkmper * c;
-
-	vLLA.x = lat * 180.0 / PI;   // radians
-	vLLA.y = lon * 180.0 / PI;   // radians
-	vLLA.z = alt;			// kilometers
-	vLLA.w = theta * 180.0 / PI; // radians
-	return vLLA;
-}
 
 

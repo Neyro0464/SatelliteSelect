@@ -4,8 +4,15 @@
 
 class ICalcMethod{
 public:
+    struct name
+    {
+        name() {}
+    };
     virtual ~ICalcMethod() = default;
-    virtual void Calculate() = 0;
+    virtual bool Calculate(const double time) = 0;
+    virtual double GetLat() const = 0;
+    virtual double GetLon() const = 0;
+    virtual double GetAlt() const = 0;
 
 
 };

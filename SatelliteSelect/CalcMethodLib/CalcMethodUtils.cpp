@@ -14,15 +14,15 @@ Sgp4CalcMethod::Sgp4CalcMethod ()
 //	return;
 //}
 
-Sgp4CalcMethod::Sgp4CalcMethod (char *cLine0, char *cLine1, char *cLine2)
-{
-    Init();
-    SetSatellite (cLine0, cLine1, cLine2);
-    return;
-}
+// Sgp4CalcMethod::Sgp4CalcMethod (char *cLine0, char *cLine1, char *cLine2)
+// {
+//     Init();
+//     SetSatellite (cLine0, cLine1, cLine2);
+//     return;
+// }
 
 
-bool Sgp4CalcMethod::SGP(double time)
+bool Sgp4CalcMethod::Calculate(const double time)
 {
     double tsince;
     bool ret = false;
@@ -37,11 +37,13 @@ bool Sgp4CalcMethod::SGP(double time)
     if (ret == false) return false;	// Ooops, there was a mistake within the calculation !!!
     ConvertSatState(pos, vel);	// here the pos && vel vector are
                                     // to be copied to m_vPOS && m_vVEL !!!
+
+    CalculateLatLonAlt(time); //CHANGES HERE!!!!!!!!!!!!!
     return true;
 } // Procedure SGP
 
 
-void Sgp4CalcMethod::SetSatellite (char *cLine0, char *cLine1, char *cLine2)
+void Sgp4CalcMethod::SetSatellite(char *cLine0, char *cLine1, char *cLine2)
 {
     memcpy(m_cLine0, cLine0, 22);
     memcpy(m_cLine1, cLine1, 69);
@@ -102,7 +104,7 @@ std::string Sgp4CalcMethod::GetSatName() const
     return m_Sat.cSatelliteName;
 }
 
-void Sgp4CalcMethod::CalculateLatLonAlt(double jdTime)
+void Sgp4CalcMethod::CalculateLatLonAlt(const double jdTime)
 {
     m_vLLA = CalculateLatLonAlt(m_vPOS, jdTime);
     m_bLatLonAlt = true;
@@ -347,7 +349,7 @@ void Sgp4CalcMethod::InitSatellite()
 //	memcpy(m_Sat.cEmphemeristType, pSat->cEmphemeristType,2);
 //	m_Sat.iElementNumber		= pSat->iElementNumber;
 //
-//	m_Sat.fInclination			= pSat->fInclination;˜
+//	m_Sat.fInclination			= pSat->fInclination;ï¿½
 //	m_Sat.fRightAscending		= pSat->fRightAscending;
 //	m_Sat.fEccentricity			= pSat->fEccentricity;
 //	m_Sat.fPeregee				= pSat->fPeregee;

@@ -1,4 +1,4 @@
-﻿#include <sstream>
+#include <sstream>
 #include <chrono>
 #include <iostream>
 #include <iomanip>

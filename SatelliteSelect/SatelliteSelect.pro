@@ -13,8 +13,9 @@ SOURCES += \
         CalcMethodLib/myTime.cpp \
         CoordWorkerUtils.cpp \
         FileTxtReader.cpp \
-        Source.cpp \
-        StationClass.cpp
+        StationClass.cpp \
+        run_test/CalcMethodTest.cpp \
+        run_test/FileReaderTest.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -23,13 +24,15 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     CalcMethodLib/ICalcMethod.h \
+    CalcMethodLib/ICalcMethodSGP4.h \
     CalcMethodLib/Sgp4CalcMethod.h \
     CalcMethodLib/myVector.h \
     CoordWorkerUtils.h \
-    ErrorHandler.h \
     FileTxtReader.h \
     IReader.h \
     StationClass.h
 
 DISTFILES += \
-    TLE.txt
+    TLE.txt \
+    run_test/testTLE.txt \
+    testTLE.txt

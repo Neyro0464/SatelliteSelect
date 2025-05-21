@@ -46,8 +46,10 @@ int main() {
     std::cout << "Satellites in view:\n";
     selector.ShowResult();
 
+    // 8. Повторный вывод результатов после задержки
     for(std::size_t i = 100000000; i > 0; i--)
         int a = 0;
+
     selector.Solve();
     std::cout << "Satellites in view:\n";
     selector.ShowResult();

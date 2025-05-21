@@ -101,7 +101,10 @@ bool SatelliteSelect::isSpeedMatch() {
     auto now = system_clock::now();
     auto now_time_t = system_clock::to_time_t(now);
     struct tm now_tm;
-    gmtime_s(&now_tm, &now_time_t);
+    if (std::gmtime(&now_time_t) == nullptr) {
+        return false;
+    }
+    now_tm = *std::gmtime(&now_time_t); // Copy the tm structure
 
     tm Time2 = now_tm;
     Time2.tm_min += 1;
@@ -248,7 +251,10 @@ bool SatelliteSelect::GetSatDiraction() {
     auto now = system_clock::now();
     auto now_time_t = system_clock::to_time_t(now);
     struct tm now_tm;
-    gmtime_s(&now_tm, &now_time_t); // Working in UTC time
+    if (std::gmtime(&now_time_t) == nullptr) {
+        return false;
+    }
+    now_tm = *std::gmtime(&now_time_t); // Copy the tm structure
 
     tm Time2 = now_tm;
     Time2.tm_min += 1;
@@ -318,7 +324,10 @@ void SatelliteSelect::Solve() {
     auto now_time_t = system_clock::to_time_t(now);
 
     tm now_tm;
-    gmtime_s(&now_tm, &now_time_t);  // Working in UTC time
+    if (std::gmtime(&now_time_t) == nullptr) {
+        return;
+    }
+    now_tm = *std::gmtime(&now_time_t); // Copy the tm structure
 
     tm lowerTime = now_tm;  // lower bound of time (current time + 30 sec)
     lowerTime.tm_sec += 30;

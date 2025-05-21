@@ -176,25 +176,14 @@ long Sgp4CalcMethod::GetInt(int iStart, int iEnd, char *cLine)
 
 std::string Sgp4CalcMethod::GetString(int iStart, int iEnd, char *cLine)
 {
-    char cBuffer[100];
-    iStart --;
-    int iLength = abs(iEnd-iStart);
-    if (iLength >= 100) iLength = 99;	// To be on the save side ...
-    strncpy_s(cBuffer, sizeof(cBuffer), cLine + iStart, iLength);
-    cBuffer[iLength] = '\0';	// Strng terminator ...
-    return cBuffer;
+    iStart--;
+    int iLength = std::abs(iEnd - iStart);
+    if (iStart < 0 || iLength <= 0) {
+        return "";
+    }
+    return std::string(cLine + iStart, std::min(iLength, static_cast<int>(strlen(cLine) - iStart)));
 }
 
-//char* Sgp4CalcMethod::GetString(int iStart, int iEnd, char* cLine)
-//{
-//	char cBuffer[100];
-//	iStart--;
-//	int iLength = abs(iEnd - iStart);
-//	if (iLength >= 100) iLength = 99;	// To be on the save side ...
-//	strncpy_s(cBuffer, sizeof(cBuffer), cLine + iStart, iLength);
-//	cBuffer[iLength] = '\0';	// Strng terminator ...
-//	return (char*) &cBuffer;
-//}
 
 void Sgp4CalcMethod::ConvertSatState(tagVECTOR& pos,tagVECTOR& vel)
 {
@@ -206,7 +195,6 @@ void Sgp4CalcMethod::ConvertSatState(tagVECTOR& pos,tagVECTOR& vel)
     vel.y *= xkmper/60.0;	// kilometers/second
     vel.z *= xkmper/60.0;	// kilometers/second
     vel.w = sqrt(sqr(vel.x)+sqr(vel.y)+sqr(vel.z));
-    // write to the public member ...
     m_vPOS.x = pos.x;
     m_vPOS.y = pos.y;
     m_vPOS.z = pos.z;

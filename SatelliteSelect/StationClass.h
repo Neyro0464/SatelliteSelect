@@ -26,9 +26,10 @@ public:
 private:
     CoordWorkerUtils::CoordDecart dec{};
     const CoordWorkerUtils::CoordGeodetic geo{};
-    const StationVision lim{};
+    StationVision lim{};
     // const StationParams station;
 
+    void ConvertLimDegToRad();
     void CalcCoordDecart() {  dec = CoordWorkerUtils::ConvertGEOtoDecart(geo); };
     bool CheckParams() const;
 

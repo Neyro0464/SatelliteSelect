@@ -15,6 +15,8 @@ public:
     virtual double JulianDate(double st) = 0;
     virtual tm CalendarDate(double dJulian) = 0;
 
+    virtual ~ICalcMethodSGP4() = default;
+
 };
 
 

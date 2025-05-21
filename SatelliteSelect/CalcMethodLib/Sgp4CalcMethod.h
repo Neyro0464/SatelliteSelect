@@ -156,6 +156,7 @@ public:
 
     // Sgp4CalcMethod(char* m_cLine0, char* m_cLine1, char* m_cLine2);
     Sgp4CalcMethod();
+    ~Sgp4CalcMethod() = default;
 
     // ICalcMethod
     void SetSatellite(char* m_cLine0, char* m_cLine1, char* m_cLine2) override;
@@ -174,15 +175,7 @@ public:
     double JulianDate(tm st) override;
     double JulianDate(double st) override;
     tm CalendarDate(double dJulian) override;
-    
 
-
-
-    
-   
- 
-
-   
 };
 
 

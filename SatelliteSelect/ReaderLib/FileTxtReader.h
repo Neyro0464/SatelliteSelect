@@ -9,7 +9,6 @@
 #include "IReader.h"
 
 
-
 class FileTxtReader : public IReader {
 public:
     // FileTxtReader() = default;

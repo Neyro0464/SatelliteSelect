@@ -12,10 +12,12 @@ SOURCES += \
         CalcMethodLib/myMath.cpp \
         CalcMethodLib/myTime.cpp \
         CoordWorkerUtils.cpp \
-        FileTxtReader.cpp \
+        ReaderLib/FileTxtReader.cpp \
+        SatelliteSelect.cpp \
         StationClass.cpp \
         run_test/CalcMethodTest.cpp \
-        run_test/FileReaderTest.cpp
+        run_test/FileReaderTest.cpp \
+        run_test/MainTest.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -28,11 +30,11 @@ HEADERS += \
     CalcMethodLib/Sgp4CalcMethod.h \
     CalcMethodLib/myVector.h \
     CoordWorkerUtils.h \
-    FileTxtReader.h \
-    IReader.h \
+    ReaderLib/FileTxtReader.h \
+    ReaderLib/IReader.h \
+    SatelliteSelect.h \
     StationClass.h
 
 DISTFILES += \
     TLE.txt \
     run_test/testTLE.txt \
-    testTLE.txt

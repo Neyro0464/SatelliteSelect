@@ -1,4 +1,4 @@
-#include "FileTxtReader.h"
+#include "../ReaderLib/FileTxtReader.h"
 
 FileTxtReader::FileTxtReader(const std::string& src){
     if(src.substr(src.size() - 3) != "txt"){

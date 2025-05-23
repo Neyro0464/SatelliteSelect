@@ -68,6 +68,8 @@ public:
 
     void Solve();
 
+    void showNorad();
+
 	/*
 	Function return final satellite array
 	*/

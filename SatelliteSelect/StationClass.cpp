@@ -10,7 +10,7 @@ geo{latitude, longitude, altitude}, lim{minAzmute, maxAzmute, minElavation, maxE
         throw std::invalid_argument("Wrong station params");
     }
     CalcCoordDecart();
-    ConvertLimDegToRad();
+    ConvertStationParamToRad();
 }
 
 StationClass::StationClass(double latitude, double longitude, double altitude, StationVision limits):
@@ -20,7 +20,7 @@ StationClass::StationClass(double latitude, double longitude, double altitude, S
         throw std::invalid_argument("Wrong station params");
     }
     CalcCoordDecart();
-    ConvertLimDegToRad();
+    ConvertStationParamToRad();
 }
 
 StationClass::StationClass(CoordWorkerUtils::CoordGeodetic geodetic, StationVision limits):
@@ -30,9 +30,12 @@ StationClass::StationClass(CoordWorkerUtils::CoordGeodetic geodetic, StationVisi
         throw std::invalid_argument("Wrong station params");
     }
     CalcCoordDecart();
-    ConvertLimDegToRad();
+    ConvertStationParamToRad();
 }
-void StationClass::ConvertLimDegToRad(){
+void StationClass::ConvertStationParamToRad(){
+    geo.Lat = CoordWorkerUtils::DegToRad(geo.Lat);
+    geo.Lon = CoordWorkerUtils::DegToRad(geo.Lon);
+
     lim.minAzm = CoordWorkerUtils::DegToRad(lim.minAzm);
     lim.maxAzm = CoordWorkerUtils::DegToRad(lim.maxAzm);
 

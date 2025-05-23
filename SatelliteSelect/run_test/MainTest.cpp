@@ -15,7 +15,7 @@ int main() {
         120.0,
         200.0,
         10.0,
-        90.0,
+        80.0,
         20
         );
 
@@ -23,7 +23,7 @@ int main() {
     SatelliteSelect selector(station);
 
     // 3. Создание и установка модели чтения данных
-    auto reader = std::make_unique<FileTxtReader>("C:\\Qt\\Projects\\SatelliteSelect\\SatelliteSelect\\TLE.txt");
+    auto reader = std::make_unique<FileTxtReader>("C:\\Qt\\Projects\\SatelliteSelect\\SatelliteSelect\\run_test\\testTLE.txt");
     if (!selector.SetReadModel(std::move(reader))) {
         std::cerr << "Failed to set reader model!" << std::endl;
         return 1;
@@ -46,13 +46,13 @@ int main() {
     std::cout << "Satellites in view:\n";
     selector.ShowResult();
 
-    // 8. Повторный вывод результатов после задержки
-    for(std::size_t i = 100000000; i > 0; i--)
-        int a = 0;
+    // // 8. Повторный вывод результатов после задержки
+    // for(std::size_t i = 100000000; i > 0; i--)
+    //     int a = 0;
 
-    selector.Solve();
-    std::cout << "Satellites in view:\n";
-    selector.ShowResult();
+    // selector.Solve();
+    // std::cout << "Satellites in view:\n";
+    // selector.ShowResult();
 
 
     return 0;

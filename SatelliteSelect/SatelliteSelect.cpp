@@ -70,7 +70,6 @@ bool SatelliteSelect::SetCalcMethod(std::unique_ptr<ICalcMethod> calcModel) {
 
 
 void SatelliteSelect::SetNorad(FileTxtReader::dataFrame& data) {
-
     extMethod->SetSatellite(std::get<0>(data), std::get<1>(data), std::get<2>(data));
     return;
 }
@@ -81,7 +80,7 @@ void SatelliteSelect::DataPrepare() {
         if(!b.has_value()) break;
 
         extMethod->SetSatellite(std::get<0>(b.value()), std::get<1>(b.value()), std::get<2>(b.value()));
-        
+
         if (!isSpeedMatch()) {
             continue;
         }
@@ -90,6 +89,11 @@ void SatelliteSelect::DataPrepare() {
     }
 }
 
+void SatelliteSelect::showNorad(){
+    for (auto& i: NoradData){
+        std::cout<< std::get<0>(i) << "\n";
+    }
+}
 
 // Checking if velocity of satellite does not exceed 1.9 deg/min
 // return true if >= 1.9
@@ -203,6 +207,7 @@ std::optional<double> SatelliteSelect::isTimeIntersect(double& theta, double& fi
         tempTm = extMethod->JulianDate(timeSearcher);
         Satellite_1 = SatellitePos(SatelliteLLA_1, Satellite_1, tempTm);
         checkIntersection = SatInViewOfStation(Satellite_1, theta, fi);
+
         timeSearcher.tm_sec += station.GetStationVision().timeMinObserveSec;
     }
     // Chech if satellite intersect in needed time period
@@ -212,17 +217,17 @@ std::optional<double> SatelliteSelect::isTimeIntersect(double& theta, double& fi
 
     // Searching accurate time(sec) of intersecting field od view
     // go back in time by 1 sec while satellite is in field of view
-    while(checkIntersection == true && tempTm >= lowerTm){
+    while(checkIntersection == true){
         timeSearcher.tm_sec -= 1;
         tempTm = extMethod->JulianDate(timeSearcher);
         Satellite_1 = SatellitePos(SatelliteLLA_1, Satellite_1, tempTm);
         checkIntersection = SatInViewOfStation(Satellite_1, theta, fi);
     }
-    if(tempTm < lowerTm){
-        return std::nullopt;
-    }
+
     timeSearcher.tm_sec += 1; // to neutralize last iteration and do satellite intersect
     tempTm = extMethod->JulianDate(timeSearcher);
+    Satellite_1 = SatellitePos(SatelliteLLA_1, Satellite_1, tempTm);
+    checkIntersection = SatInViewOfStation(Satellite_1, theta, fi);
 
     double tmpfi = fi;
     double tmtheta = theta;
@@ -233,7 +238,11 @@ std::optional<double> SatelliteSelect::isTimeIntersect(double& theta, double& fi
     double checkTime = extMethod->JulianDate(filterTime);
     extMethod->Calculate(checkTime);
     Satellite_1 = SatellitePos(SatelliteLLA_1, Satellite_1, checkTime);
+
     if (SatInViewOfStation(Satellite_1, tmtheta, tmpfi)) {
+        if (tempTm < lowerTm) {
+            return lowerTm;
+        }
         return tempTm;
     }
     else
@@ -262,7 +271,7 @@ bool SatelliteSelect::GetSatDiraction() {
     double time = extMethod->JulianDate(now_tm);
     double time2 = extMethod->JulianDate(Time2);
 
-    extMethod->Calculate(time);
+    // extMethod->Calculate(time);
     Satellite_1 = SatellitePos(SatelliteLLA, Satellite_1, time);
 
     double x = station.GetCoordDecart().x;
@@ -271,8 +280,8 @@ bool SatelliteSelect::GetSatDiraction() {
 
     len = sqrt(pow(Satellite_1.x - x, 2) + pow(Satellite_1.y - y, 2) + pow(Satellite_1.z - z, 2));
 
-    extMethod->Calculate(time2);
-    Satellite_2 = SatellitePos(SatelliteLLA, Satellite_2, time);
+    // extMethod->Calculate(time2);
+    Satellite_2 = SatellitePos(SatelliteLLA, Satellite_2, time2);
     len2 = sqrt(pow(Satellite_2.x - x, 2) + pow(Satellite_2.y - y, 2) + pow(Satellite_2.z - z, 2));
 
     if (len2 - len < 0) {   // If diff < 0 that means satellite go closer
@@ -294,6 +303,7 @@ void SatelliteSelect::FillSatData(SatelliteData& tmp, const double time, const d
     tmp.coords.geo.Lat = extMethod->GetLat();
     tmp.coords.geo.Lon = extMethod->GetLon();
     tmp.coords.geo.Alt = extMethod->GetAlt();
+
     tmp.coords.topo.azm = CoordWorkerUtils::RadToDeg(fi);
     tmp.coords.topo.elv = CoordWorkerUtils::RadToDeg(theta);
     tmp.name = satName;
@@ -351,7 +361,6 @@ void SatelliteSelect::Solve() {
     std::sort(satellite.begin(), satellite.end(), [](const SatelliteData& a, const SatelliteData& b)
         {return a.time < b.time; }
     );
-
 }
 
 const std::vector<SatelliteSelect::SatelliteData> SatelliteSelect::GetSatArray() const{

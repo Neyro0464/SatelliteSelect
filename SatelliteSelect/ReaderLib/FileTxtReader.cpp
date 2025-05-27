@@ -11,18 +11,18 @@ FileTxtReader::FileTxtReader(const std::string& src){
     }
 }
 
-bool FileTxtReader::SetReaderSrc(const std::string& src)
-{
-    if(src.substr(src.size() - 3) != "txt"){
-        return false;
-    }
-    file = std::ifstream(src);
-    if (!file.is_open()) {
-        file.clear();
-        return false;
-    }
-    return true;
-}
+// bool FileTxtReader::SetReaderSrc(const std::string& src)
+// {
+//     if(src.substr(src.size() - 3) != "txt"){
+//         return false;
+//     }
+//     file = std::ifstream(src);
+//     if (!file.is_open()) {
+//         file.clear();
+//         return false;
+//     }
+//     return true;
+// }
 
 std::optional<FileTxtReader::dataFrame> FileTxtReader::GetFrame(){
     std::string name, param1, param2;

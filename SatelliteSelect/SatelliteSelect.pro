@@ -36,5 +36,6 @@ HEADERS += \
     StationClass.h
 
 DISTFILES += \
+    StationParams.ini \
     TLE.txt \
     run_test/testTLE.txt \

@@ -1,4 +1,5 @@
-#include <iostream>
+#include <stdexcept>
+#include <QSettings>
 
 #include "StationClass.h"
 
@@ -32,6 +33,29 @@ StationClass::StationClass(CoordWorkerUtils::CoordGeodetic geodetic, StationVisi
     CalcCoordDecart();
     ConvertStationParamToRad();
 }
+StationClass::StationClass(const std::string &src){
+    if(src.substr(src.size() - 3) != "ini"){
+        throw std::invalid_argument("Wrong file extension");
+    }
+    QSettings settings(QString::fromStdString(src), QSettings::IniFormat);
+    settings.beginGroup("StationParam");
+    geo.Lat = settings.value("Latitude").toDouble();
+    geo.Lon = settings.value("Longitude").toDouble();
+    geo.Alt = settings.value("Altitude").toDouble();
+    lim.minAzm = settings.value("MinAzimut").toDouble();
+    lim.maxAzm = settings.value("MaxAzimut").toDouble();
+    lim.minElv = settings.value("MinElevation").toDouble();
+    lim.maxElv = settings.value("MaxElevation").toDouble();
+    lim.timeMinObserveSec = settings.value("minimalTimeObservation").toInt();
+    // settings.clear();
+
+    if(!CheckParams()){
+        throw std::invalid_argument("Wrong station params");
+    }
+    CalcCoordDecart();
+    ConvertStationParamToRad();
+}
+
 void StationClass::ConvertStationParamToRad(){
     geo.Lat = CoordWorkerUtils::DegToRad(geo.Lat);
     geo.Lon = CoordWorkerUtils::DegToRad(geo.Lon);

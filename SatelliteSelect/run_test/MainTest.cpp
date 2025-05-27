@@ -8,22 +8,13 @@ int main() {
     // 1. Создание объекта станции
     // Параметры: широта (градусы), долгота (градусы), высота (км),
     // минимальный/максимальный азимут (рад), минимальный/максимальный угол места (рад), минимальное время наблюдения (сек)
-    StationClass station(
-        56.14717,
-        37.76275,
-        100,
-        120.0,
-        200.0,
-        10.0,
-        80.0,
-        20
-        );
+    StationClass station("StationParams.ini");
 
     // 2. Создание объекта SatelliteSelect
     SatelliteSelect selector(station);
 
     // 3. Создание и установка модели чтения данных
-    auto reader = std::make_unique<FileTxtReader>("C:\\Qt\\Projects\\SatelliteSelect\\SatelliteSelect\\run_test\\testTLE.txt");
+    auto reader = std::make_unique<FileTxtReader>("TLE.txt");
     if (!selector.SetReadModel(std::move(reader))) {
         std::cerr << "Failed to set reader model!" << std::endl;
         return 1;

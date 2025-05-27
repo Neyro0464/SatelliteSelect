@@ -15,7 +15,6 @@ public:
     explicit FileTxtReader(const std::string& src);
     ~FileTxtReader() = default;
 
-    bool SetReaderSrc(const std::string&) override;
     std::optional<dataFrame> GetFrame() override;
 
 
